@@ -43,7 +43,7 @@ MAX_UPLOAD_SIZE = int(os.getenv("MAX_UPLOAD_SIZE", 5 * 1024 * 1024))  # 5MB defa
 OCR_ENGINE = "pytesseract"
 # Set tesseract path based on platform
 if platform.system() == "Windows":
-    TESSERACT_CMD = os.getenv("TESSERACT_CMD", r"C:\Program Files\Tesseract-OCR\tesseract.exe")
+    TESSERACT_CMD = os.getenv("TESSERACT_CMD", r"C:\\Program Files\\Tesseract-OCR\\tesseract.exe")
 else:
     TESSERACT_CMD = os.getenv("TESSERACT_CMD", "/usr/bin/tesseract")
 
