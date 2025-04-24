@@ -11,7 +11,7 @@ def pdf_to_images(pdf_path: str) -> List[np.ndarray]:
         for page in pages:
             open_cv_image = cv.cvtColor(np.array(page), cv.COLOR_RGB2GRAY)
             images.append(open_cv_image)
-            break
+            
         return images
     except Exception as e:
         print(f"Error converting PDF to images: {e}")
@@ -38,18 +38,18 @@ def detect_and_split(image_input: Union[str, np.ndarray], output_dir="chunks", d
         if src is None:
             raise FileNotFoundError(f"Could not load {image_input}")
     
-    h, w = src.shape
-
     edges = cv.Canny(src, 50, 150, apertureSize=3)
-
+    h, w = src.shape
+    minLineLength = max(150, int(w * .120))  
     linesP = cv.HoughLinesP(
         edges,
         rho=1,
-        theta=np.pi/180,
-        threshold=50,
-        minLineLength=int(h*.75),
-        maxLineGap=10
+        theta=np.pi / 180,
+        threshold=100,  
+        minLineLength=minLineLength,
+        maxLineGap=20
     )
+
 
     y_hits = []
     if linesP is not None:
@@ -111,7 +111,7 @@ def detect_and_split(image_input: Union[str, np.ndarray], output_dir="chunks", d
 
 if __name__ == "__main__":
     parts = process_document(
-        "test.pdf", 
+        "aigrader-test3.pdf", 
         output_dir="chunks",
         debug=True
     )
