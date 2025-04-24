@@ -1,10 +1,19 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 from api.utils import extract_text_from_upload, call_grading_model
 from prompts.prompt import build_grading_prompt
 from api.schemas import GradeResponse
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.post("/grade", response_model=GradeResponse)
 async def grade(student_doc: UploadFile = File(...), answer_key: UploadFile = File(...)):
